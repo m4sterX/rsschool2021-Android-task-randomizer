@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnButtonPressed{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,11 +19,27 @@ public class MainActivity extends AppCompatActivity {
     private void openFirstFragment(int previousNumber) {
         final Fragment firstFragment = FirstFragment.newInstance(previousNumber);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, firstFragment);
-        // TODO: invoke function which apply changes of the transaction
+        transaction.replace(R.id.container, firstFragment)
+                .addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void firstBTN(int min, int max) {
+        openSecondFragment(min, max);
+    }
+
+    @Override
+    public void secondBTN(int previous) {
+        openFirstFragment(previous);
     }
 
     private void openSecondFragment(int min, int max) {
-        // TODO: implement it
+        final Fragment secondFragment = SecondFragment.newInstance(min, max);
+        final FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.container, secondFragment);
+        transaction.commit();
     }
 }
